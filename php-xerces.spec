@@ -7,7 +7,7 @@ License:	GPL
 Group:		Libraries
 Source0:	http://ggodlewski.host.sk/download/php-xerces/%{name}-%{version}.tar.gz
 # Source0-md5:	ccd6688e01a88a3a14735205ce254083
-URL:		http://ggodlewski.host.sk/php/xerces
+URL:		http://ggodlewski.host.sk/php/xerces/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	xerces-c-devel
