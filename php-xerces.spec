@@ -1,12 +1,12 @@
 Summary:	PHP XML Parser with validation
 Summary(pl):	Parser XML z kontrol± poprawno¶ci dla PHP
 Name:		php-xerces
-Version:	0.2
+Version:	0.5
 Release:	1
 License:	GPL
 Group:		Libraries
-Source0:	http://ggodlewski.host.sk/php/xerces/%{name}-%{version}.tar.gz
-# Source0-md5:	aec919a964cbc92efa00bb097f1f470f
+Source0:	http://ggodlewski.host.sk/download/php-xerces/%{name}-%{version}.tar.gz
+# Source0-md5:	ccd6688e01a88a3a14735205ce254083
 URL:		http://ggodlewski.host.sk/php/xerces
 BuildRequires:	autoconf
 BuildRequires:	automake
