@@ -1,17 +1,18 @@
 Summary:	PHP XML Parser with validation
 Summary(pl):	Parser XML z kontrol± poprawno¶ci dla PHP
 Name:		php-xerces
-Version:	0.5
+Version:	0.8
 Release:	1
-License:	GPL
+License:	Apache
 Group:		Libraries
 Source0:	http://ggodlewski.host.sk/download/php-xerces/%{name}-%{version}.tar.gz
-# Source0-md5:	ccd6688e01a88a3a14735205ce254083
+# Source0-md5:	8e9bbebe6c918d83fc608231e53a04aa
 URL:		http://ggodlewski.host.sk/php/xerces/
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	xerces-c-devel
+BuildRequires:	libtool
 BuildRequires:	php-devel
+BuildRequires:	xerces-c-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc/php
@@ -30,7 +31,11 @@ o DTD i XML-Schema.
 %prep
 %setup -q
 
+sed -e 's/-version-info [^ ]*/-avoid-version/' Makefile.am > Makefile.am.tmp
+mv -f Makefile.am.tmp Makefile.am
+
 %build
+%{__libtoolize}
 %{__aclocal}
 %{__autoconf}
 %{__autoheader}
@@ -40,9 +45,9 @@ o DTD i XML-Schema.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -57,5 +62,5 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc README ChangeLog
-%{_libdir}/php/*
+%doc AUTHORS ChangeLog README TODO
+%attr(755,root,root) %{_libdir}/php/xerces.so
