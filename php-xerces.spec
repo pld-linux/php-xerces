@@ -8,6 +8,8 @@ Group:		Libraries
 Source0:	http://ggodlewski.host.sk/download/php-xerces/%{name}-%{version}.tar.gz
 # Source0-md5:	8e9bbebe6c918d83fc608231e53a04aa
 URL:		http://ggodlewski.host.sk/php/xerces/
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	php-devel
 BuildRequires:	xerces-c-devel
