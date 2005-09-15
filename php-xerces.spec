@@ -1,8 +1,14 @@
+# TODO
+# - doesn't compile
+%define		_modname	xerces
+%define		_sysconfdir	/etc/php
+%define		extensionsdir	%(php-config --extension-dir 2>/dev/null)
+
 Summary:	PHP XML Parser with validation
 Summary(pl):	Analizator XML-a z kontrol± poprawno¶ci dla PHP
 Name:		php-xerces
 Version:	0.8
-Release:	1
+Release:	1.1
 License:	Apache
 Group:		Libraries
 Source0:	http://ggodlewski.host.sk/download/php-xerces/%{name}-%{version}.tar.gz
@@ -11,11 +17,11 @@ URL:		http://ggodlewski.host.sk/php/xerces/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
-BuildRequires:	php-devel
+BuildRequires:	php-devel >= 3:5.0.0
+BuildRequires:	rpmbuild(macros) >= 1.238
 BuildRequires:	xerces-c-devel
+%{?requires_php_extension}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-
-%define		_sysconfdir	/etc/php
 
 %description
 This extension lets you create XML parsers and then define handlers
@@ -45,21 +51,31 @@ mv -f Makefile.am.tmp Makefile.am
 %install
 rm -rf $RPM_BUILD_ROOT
 
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/conf.d
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
+
+cat <<'EOF' > $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/%{_modname}.ini
+; Enable %{_modname} extension module
+extension=%{_modname}.so
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%preun
-if [ "$1" = "0" ]; then
-	%{_sbindir}/php-module-install remove xerces %{_sysconfdir}/php.ini
-fi
-
 %post
-%{_sbindir}/php-module-install install xerces %{_sysconfdir}/php.ini
+[ ! -f /etc/apache/conf.d/??_mod_php.conf ] || %service -q apache restart
+[ ! -f /etc/httpd/httpd.conf/??_mod_php.conf ] || %service -q httpd restart
+
+%postun
+if [ "$1" = 0 ]; then
+	[ ! -f /etc/apache/conf.d/??_mod_php.conf ] || %service -q apache restart
+	[ ! -f /etc/httpd/httpd.conf/??_mod_php.conf ] || %service -q httpd restart
+fi
 
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README TODO
-%attr(755,root,root) %{_libdir}/php/xerces.so
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/%{_name}.ini
+%attr(755,root,root) %{extensionsdir}/xerces.so
