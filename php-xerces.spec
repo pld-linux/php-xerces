@@ -18,7 +18,7 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	php-devel >= 3:5.0.0
-BuildRequires:	rpmbuild(macros) >= 1.238
+BuildRequires:	rpmbuild(macros) >= 1.322
 BuildRequires:	xerces-c-devel
 %{?requires_php_extension}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
