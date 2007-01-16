@@ -1,9 +1,6 @@
 # TODO
 # - doesn't compile
 %define		_modname	xerces
-%define		_sysconfdir	/etc/php
-%define		extensionsdir	%(php-config --extension-dir 2>/dev/null)
-
 Summary:	PHP XML Parser with validation
 Summary(pl):	Analizator XML-a z kontrol± poprawno¶ci dla PHP
 Name:		php-xerces
@@ -18,9 +15,11 @@ BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libtool
 BuildRequires:	php-devel >= 3:5.0.0
-BuildRequires:	rpmbuild(macros) >= 1.322
+BuildRequires:	rpmbuild(macros) >= 1.344
 BuildRequires:	xerces-c-devel
+BuildRequires:	sed >= 4.0
 %{?requires_php_extension}
+Requires:	php-common >= 4:5.0.4
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -35,9 +34,7 @@ dokumentów w oparciu o DTD i XML-Schema.
 
 %prep
 %setup -q
-
-sed -e 's/-version-info [^ ]*/-avoid-version/' Makefile.am > Makefile.am.tmp
-mv -f Makefile.am.tmp Makefile.am
+%{__sed} -i -e 's/-version-info [^ ]*/-avoid-version/' Makefile.am
 
 %build
 %{__libtoolize}
@@ -51,12 +48,12 @@ mv -f Makefile.am.tmp Makefile.am
 %install
 rm -rf $RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/conf.d
+install -d $RPM_BUILD_ROOT%{php_sysconfdir}/conf.d
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-cat <<'EOF' > $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/%{_modname}.ini
+cat <<'EOF' > $RPM_BUILD_ROOT%{php_sysconfdir}/conf.d/%{_modname}.ini
 ; Enable %{_modname} extension module
 extension=%{_modname}.so
 EOF
@@ -65,17 +62,15 @@ EOF
 rm -rf $RPM_BUILD_ROOT
 
 %post
-[ ! -f /etc/apache/conf.d/??_mod_php.conf ] || %service -q apache restart
-[ ! -f /etc/httpd/httpd.conf/??_mod_php.conf ] || %service -q httpd restart
+%php_webserver_restart
 
 %postun
 if [ "$1" = 0 ]; then
-	[ ! -f /etc/apache/conf.d/??_mod_php.conf ] || %service -q apache restart
-	[ ! -f /etc/httpd/httpd.conf/??_mod_php.conf ] || %service -q httpd restart
+	%php_webserver_restart
 fi
 
 %files
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README TODO
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/%{_name}.ini
-%attr(755,root,root) %{extensionsdir}/xerces.so
+%config(noreplace) %verify(not md5 mtime size) %{php_sysconfdir}/conf.d/%{_name}.ini
+%attr(755,root,root) %{php_extensiondir}/xerces.so
