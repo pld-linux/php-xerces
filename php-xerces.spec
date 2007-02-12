@@ -2,7 +2,7 @@
 # - doesn't compile
 %define		_modname	xerces
 Summary:	PHP XML Parser with validation
-Summary(pl):	Analizator XML-a z kontrol± poprawno¶ci dla PHP
+Summary(pl.UTF-8):   Analizator XML-a z kontrolÄ… poprawnoÅ›ci dla PHP
 Name:		php-xerces
 Version:	0.8
 Release:	1.1
@@ -27,10 +27,10 @@ This extension lets you create XML parsers and then define handlers
 for different XML events. It can also validate documents with DTD and
 XML-Schema.
 
-%description -l pl
-Modu³ PHP umo¿liwiaj±cy parsowanie plików XML i obs³ugê zdarzeñ
-zwi±zanych z tymi plikami. Potrafi równie¿ sprawdzaæ poprawno¶æ
-dokumentów w oparciu o DTD i XML-Schema.
+%description -l pl.UTF-8
+ModuÅ‚ PHP umoÅ¼liwiajÄ…cy parsowanie plikÃ³w XML i obsÅ‚ugÄ™ zdarzeÅ„
+zwiÄ…zanych z tymi plikami. Potrafi rÃ³wnieÅ¼ sprawdzaÄ‡ poprawnoÅ›Ä‡
+dokumentÃ³w w oparciu o DTD i XML-Schema.
 
 %prep
 %setup -q
