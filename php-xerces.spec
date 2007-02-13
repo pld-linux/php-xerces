@@ -2,7 +2,7 @@
 # - doesn't compile
 %define		_modname	xerces
 Summary:	PHP XML Parser with validation
-Summary(pl.UTF-8):   Analizator XML-a z kontrolą poprawności dla PHP
+Summary(pl.UTF-8):	Analizator XML-a z kontrolą poprawności dla PHP
 Name:		php-xerces
 Version:	0.8
 Release:	1.1
